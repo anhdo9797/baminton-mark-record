@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="">
+  <meta property="og:site_name" content="">
+  <meta property="og:url" content="">
+  <meta property="og:image" content="<%= context.config.publicPath +'logo.svg'%>">
+  <meta property="og:title" content="">
+  <meta property="og:description" content="">
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <title>Baminton Mark</title>
+  <link rel="icon" href="<%= context.config.publicPath +'icons/icon-128x128.png'%>" type="image/x-icon" />
+</head>
+
+<body>
+  <noscript>Out-of-the-box mid-stage front/design solution!</noscript>
+  <div id="root">
+    <style>
+      html,
+      body,
+      #root {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      .page-loading-warp {
+        padding: 98px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    </style>
+    <div style="
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+          min-height: 420px;
+          height: 100%;
+        ">
+      <img src="<%= context.config.publicPath +'logo.svg'%>" alt="logo" width="256" />
+    </div>
+  </div>
+</body>
+
+</html>
