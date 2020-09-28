@@ -1,40 +1,57 @@
-import React from 'react';
+import React, { useState } from 'react';
 import style from './styles.scss';
 
-import { Input, Upload } from 'antd';
-import { FileImageOutlined } from '@ant-design/icons';
+import { Input, Upload, message } from 'antd';
+import ImgCrop from 'antd-img-crop';
+//style Img crop
+import 'antd/es/modal/style';
+import 'antd/es/slider/style';
 
 import '../../theme.scss';
+import ButtonCustom from '@/components/Button';
+import Loading from '@/components/Loading/Loading';
 
-const UpdateProFile: React.FC<{}> = () => {
-    function getBase64(img: string, callback: any) {
-        const reader = new FileReader();
-        reader.addEventListener('load', () => callback(reader.result));
-        reader.readAsDataURL(img);
+const gallery = require('../../assets/icon/gallery.svg');
+function getBase64(img: Blob, callback: any) {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => callback(reader.result));
+    reader.readAsDataURL(img);
+}
+
+function beforeUpload(file: any) {
+    //check file img
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+    if (!isJpgOrPng) {
+        message.error('You can only upload JPG/PNG file!');
     }
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+        message.error('Image must smaller than 2MB!');
+    }
+    return isJpgOrPng && isLt2M;
+}
+const UpdateProFile: React.FC<{}> = () => {
+    const [avt, setAvt] = useState('');
+    const [useName, setUseName] = useState('');
+    const [loading, setLoading] = useState(false);
 
-    const handlePreview = (info: any) => {
-        console.log('info', info);
-
+    const handleChange = (info: any) => {
         if (info.file.status === 'uploading') {
-            // this.setState({ loading: true });
+            setLoading(true);
             return;
         }
         if (info.file.status === 'done') {
-            // Get this url from response in real world.
-            getBase64(info.file.originFileObj, (imageUrl: any) =>
-                // this.setState({
-                //     imageUrl,
-                //     loading: false,
-                // }),
-                {
-                    console.log('====================================');
-                    console.log(imageUrl);
-                    console.log('====================================');
-                },
-            );
+            getBase64(info.file.originFileObj, (imageUrl: any) => {
+                setAvt(imageUrl);
+                setLoading(false);
+            });
+        }
+        if (info.file.status === 'error') {
+            message.error('Upload fail, please try another image!');
+            setLoading(false);
         }
     };
+
     return (
         <div className="container">
             <div className={style.updateProFile}>
@@ -43,21 +60,35 @@ const UpdateProFile: React.FC<{}> = () => {
                 <Input
                     placeholder="Type you name"
                     className={style.inputType}
+                    onChange={name => setUseName(name.target.value)}
                 />
-
                 <h2> Your avatar? </h2>
-                <Upload
-                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                    listType="picture-card"
-                    onPreview={handlePreview}
-                >
-                    {/* {fileList.length >= 8 ? null : uploadButton} */}
-                    {/* uploadButton */}
-                    <img
-                        src={require('../../assets/icon/gallery.svg')}
-                        className={style.gallery}
+                <ImgCrop>
+                    <Upload
+                        name="avatar"
+                        className="avatar-uploader"
+                        showUploadList={false}
+                        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                        beforeUpload={beforeUpload}
+                        onChange={handleChange}
+                    >
+                        {avt ? (
+                            <img src={avt} className={'ant-upload'} />
+                        ) : loading ? (
+                            <Loading />
+                        ) : (
+                            <img src={gallery} />
+                        )}
+                    </Upload>
+                </ImgCrop>
+
+                {avt && useName ? (
+                    <ButtonCustom
+                        label="Finish"
+                        onClick={() => {}}
+                        style={{ margin: '60px 0' }}
                     />
-                </Upload>
+                ) : null}
             </div>
         </div>
     );

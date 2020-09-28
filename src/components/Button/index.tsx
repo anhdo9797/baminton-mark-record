@@ -1,24 +1,19 @@
-import React from 'react'
-import { Button } from 'antd'
-import style from './styles.scss'
+import React from 'react';
+import { Button } from 'antd';
+import styles from './styles.scss';
 
 interface PopsButton {
-  label: string;
-  onClick(): any
+    label: string;
+    onClick(): any;
+    style: object;
 }
 
+const ButtonCustom: React.FC<PopsButton> = ({ label, onClick, style }) => {
+    return (
+        <Button className={styles.myButton} onClick={onClick} style={style}>
+            {label}
+        </Button>
+    );
+};
 
-const ButtonCustom: React.FC<PopsButton> = ({ label, onClick }) => {
-
-  return (
-    <Button className={style.myButton}
-      onClick={onClick}
-    >
-      {label}
-    </Button>
-  )
-}
-
-
-
-export default ButtonCustom
+export default ButtonCustom;
