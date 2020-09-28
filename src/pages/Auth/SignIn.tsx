@@ -19,11 +19,13 @@ const validateMessages = {
 
 const SignIn: React.FC = () => {
     const [input, setInput] = useState({ email: '', password: '' });
+    const [inputSuccess, setInputSuccess] = useState(false);
+
     const signIn = () => {
-        if (!input.email) {
-            message.error('Please enter email!');
-        } else if (!input.password) {
-            message.error('Please enter password!');
+        if (!input.email || input.email.indexOf('@gmail.com') == -1) {
+            message.error('Please check your email!');
+        } else if (!checkPassword(input.password)) {
+            message.error('Please check your password!');
         }
     };
 
@@ -49,8 +51,10 @@ const SignIn: React.FC = () => {
                             () => ({
                                 validator(rule, value) {
                                     if (!value || checkPassword(value)) {
+                                        setInputSuccess(true);
                                         return Promise.resolve();
                                     }
+                                    setInputSuccess(false);
                                     return Promise.reject(
                                         'Password must be 8 characters long and have no special characters!',
                                     );
@@ -62,7 +66,10 @@ const SignIn: React.FC = () => {
                             placeholder="Password"
                             className={style.inputType}
                             onChange={text =>
-                                setInput({ ...input, email: text.target.value })
+                                setInput({
+                                    ...input,
+                                    password: text.target.value,
+                                })
                             }
                         />
                     </Form.Item>

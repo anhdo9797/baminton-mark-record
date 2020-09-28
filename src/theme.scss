@@ -48,7 +48,7 @@ $textColor: #999999;
 .container {
     width: 100%;
     min-height: 100vh;
-    background-color: map-get($theme, 'backgroundColor');
+    // background-color: red;
     padding: 32px 0;
     font-family: 'SF Pro Text';
     padding: 32px 28px;
@@ -64,7 +64,7 @@ $textColor: #999999;
 //Input ant
 .ant-input-affix-wrapper > input.ant-input,
 .inputType___3KoHt {
-    background-color: $boxBg;
+    // background-color: $boxBg;
     color: $mainColor;
 }
 

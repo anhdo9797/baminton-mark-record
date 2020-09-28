@@ -81,7 +81,6 @@ const UpdateProFile: React.FC<{}> = () => {
                         )}
                     </Upload>
                 </ImgCrop>
-
                 {avt && useName ? (
                     <ButtonCustom
                         label="Finish"

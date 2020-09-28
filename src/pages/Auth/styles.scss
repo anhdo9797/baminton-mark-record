@@ -35,8 +35,6 @@ $textColor: map-get($theme, 'textColor');
 }
 
 .inputType {
-    background-color: map-get($theme, 'boxBg');
-    color: map-get($theme, 'textColor');
     @include box();
 }
 
@@ -53,6 +51,7 @@ $textColor: map-get($theme, 'textColor');
         color: $mainColor;
         font-size: 34px;
     }
+
     h2 {
         color: $primaryColor;
         font-size: 28px;

@@ -1,24 +1,50 @@
 import { defineConfig } from 'umi';
-
 export default defineConfig({
+    hash: true,
+    antd: {
+        dark: true,
+        config: {
+            prefixCls: 'ant',
+        },
+    },
+    dva: {
+        hmr: true,
+    },
+    dynamicImport: {
+        loading: '@/components/PageLoading/index',
+    },
     nodeModulesTransform: {
         type: 'none',
     },
     routes: [
         {
-            exact: true,
             path: '/',
-            component: '@/pages/Auth/SignIn',
-        },
-        {
-            exact: true,
-            path: '/sign-up',
-            component: '@/pages/Auth/SignUp',
-        },
-        {
-            exact: true,
-            path: '/update-profile',
-            component: '@/pages/Auth/UpdateProfile',
+            component: '@/layouts/index',
+            routes: [
+                {
+                    path: '/',
+                    redirect: '/sign-in',
+                },
+                {
+                    path: '/sign-in',
+                    component: '@/pages/Auth/SignIn',
+                },
+                {
+                    path: '/sign-up',
+                    component: '@/pages/Auth/SignUp',
+                },
+                {
+                    path: '/update-profile',
+                    component: '@/pages/Auth/UpdateProfile',
+                },
+            ],
         },
     ],
+    theme: {
+        '@primary-color': '#ffc22f',
+        '@body-background': ' #151522',
+        '@input-bg': '#333333',
+        '@input-icon-color': '#E4E4E4',
+        '@input-placeholder-color': '#E4E4E4',
+    },
 });

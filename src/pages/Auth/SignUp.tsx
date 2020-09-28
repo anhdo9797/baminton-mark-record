@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import style from './styles.scss';
 import '../../theme.scss';
@@ -20,6 +20,23 @@ const validateMessages = {
 };
 
 const SignUp: React.FC = () => {
+    const [input, setInput] = useState({
+        email: '',
+        password: '',
+        confirmPass: '',
+    });
+    const sigUp = () => {
+        const { email, password, confirmPass } = input;
+        if (!email || email.indexOf('@gmail.com') == -1) {
+            message.error('Please check your email!');
+        } else if (!checkPassword(password)) {
+            message.error('Please check your password!');
+        } else {
+            if (password !== confirmPass) {
+                message.error('Incorrect password');
+            }
+        }
+    };
     return (
         <div className="container">
             <div className={style.sigIn}>
@@ -76,10 +93,7 @@ const SignUp: React.FC = () => {
                             className={style.inputType}
                         />
                     </Form.Item>
-                    <ButtonCustom
-                        label="Sign Up"
-                        onClick={() => message.success('Sign Up success')}
-                    />
+                    <ButtonCustom label="Sign Up" onClick={sigUp} style={{}} />
                     <Link to="/">
                         <h4>Already have an account?</h4>
                     </Link>
