@@ -7,7 +7,6 @@ import ImgCrop from 'antd-img-crop';
 import 'antd/es/modal/style';
 import 'antd/es/slider/style';
 
-import '../../theme.scss';
 import ButtonCustom from '@/components/Button';
 import Loading from '@/components/Loading/Loading';
 
@@ -17,6 +16,12 @@ function getBase64(img: Blob, callback: any) {
     reader.addEventListener('load', () => callback(reader.result));
     reader.readAsDataURL(img);
 }
+const UpdateProFile: React.FC<{}> = () => {
+    function getBase64(img: string, callback: any) {
+        const reader = new FileReader();
+        reader.addEventListener('load', () => callback(reader.result));
+        reader.readAsDataURL(img);
+    }
 
 function beforeUpload(file: any) {
     //check file img
