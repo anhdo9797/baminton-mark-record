@@ -24,15 +24,15 @@ export default defineConfig({
                 },
                 {
                     path: '/sign-in',
-                    component: '@/pages/Auth/SignIn',
+                    component: '@/pages/Auth/SignIn/index',
                 },
                 {
                     path: '/sign-up',
-                    component: '@/pages/Auth/SignUp',
+                    component: '@/pages/Auth/SignUp/index',
                 },
                 {
                     path: '/update-profile',
-                    component: '@/pages/Auth/UpdateProfile',
+                    component: '@/pages/Auth/UpdateProfile/index',
                 },
             ],
         },
@@ -53,11 +53,21 @@ export default defineConfig({
         'height-lg': '60px',
         'height-sm': '40px',
         'font-size-base': '16px',
+
         'padding-lg': '32px',
         'padding-md': '24px',
         'padding-sm': '16px',
         'padding-xs': '12px',
         'padding-xss': '8px',
-        'text-color': '#999999',
+
+        'margin-lg': '32px',
+        'margin-md': '24px',
+        'margin-sm': '16px',
+        'margin-xs': '12px',
+        'margin-xss': '8px',
+
+        'text-default': '#FFFFFF',
+        'placeholder-color': '#999999',
+        // 'text-question': '#E0E0E0',
     },
 });

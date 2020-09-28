@@ -1,37 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, message } from 'antd';
 import { Link } from 'umi';
-import style from './index.less';
+
+import styles from '../index.less';
+import { checkPassword } from '../checkInputType';
 
 const validateMessages = {
-    required: '${label} is required!',
     types: {
         email: 'Please enter a valid email!',
         password: 'Password is not a validate',
         confirmPassword: 'Password is not a validate',
     },
-    number: {
-        range: '${label} must be between ${min} and ${max}',
-    },
-};
-
-const checkPassword = (password: string) => {
-    const check = !/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(password);
-    if (password.length > 7 && check) {
-        return true;
-    }
-    return false;
 };
 
 const SignIn: React.FC = () => {
+    const [input, setInput] = useState({ email: '', password: '' });
+
+    const signIn = () => {
+        if (!input.email || input.email.indexOf('@gmail.com') == -1) {
+            message.error('Please check your email!');
+        } else if (!checkPassword(input.password)) {
+            message.error('Please check your password!');
+        }
+    };
+
     return (
-        <div className={style.container}>
+        <div className={styles.container}>
             <h1>SMASH</h1>
             <h4>Welcome back!</h4>
             <Form validateMessages={validateMessages}>
                 <Form.Item name={['email']} rules={[{ type: 'email' }]}>
-                    <Input placeholder="Email" className={style.inputType} />
+                    <Input
+                        placeholder="Email"
+                        onChange={text =>
+                            setInput({ ...input, email: text.target.value })
+                        }
+                    />
                 </Form.Item>
                 <Form.Item
                     name={['password']}
@@ -51,10 +56,16 @@ const SignIn: React.FC = () => {
                 >
                     <Input.Password
                         placeholder="Password"
-                        className={style.inputType}
+                        className={styles.inputType}
+                        onChange={text =>
+                            setInput({
+                                ...input,
+                                password: text.target.value,
+                            })
+                        }
                     />
                 </Form.Item>
-                <Button type="primary" block>
+                <Button type="primary" block onClick={signIn}>
                     Sign In
                 </Button>
                 <Link to="/sign-up">

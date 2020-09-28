@@ -1,16 +1,16 @@
 import React from 'react';
 import { Button } from 'antd';
-import styles from './styles.scss';
 
 interface PopsButton {
     label: string;
     onClick(): any;
     style: object;
+    className: string;
 }
 
-const ButtonCustom: React.FC<PopsButton> = ({ label, onClick, style }) => {
+const ButtonCustom: React.FC<PopsButton> = ({ label, onClick, className }) => {
     return (
-        <Button className={styles.myButton} onClick={onClick} style={style}>
+        <Button type="primary" onClick={onClick} className={className}>
             {label}
         </Button>
     );

@@ -14,37 +14,6 @@ $primaryColor: #e0e0e0;
 $boxBg: #333333;
 $textColor: #999999;
 
-@font-face {
-    font-family: 'SF Pro Text';
-    src: url('//db.onlinewebfonts.com/t/236987803794b916d95e7fd41ed4fee0.eot');
-    src: url('//db.onlinewebfonts.com/t/236987803794b916d95e7fd41ed4fee0.eot?#iefix')
-            format('embedded-opentype'),
-        url('//db.onlinewebfonts.com/t/236987803794b916d95e7fd41ed4fee0.woff2')
-            format('woff2'),
-        url('//db.onlinewebfonts.com/t/236987803794b916d95e7fd41ed4fee0.woff')
-            format('woff'),
-        url('//db.onlinewebfonts.com/t/236987803794b916d95e7fd41ed4fee0.ttf')
-            format('truetype'),
-        url('//db.onlinewebfonts.com/t/236987803794b916d95e7fd41ed4fee0.svg#SF Pro Text')
-            format('svg');
-}
-
-@font-face {
-    font-family: 'SF Pro Text';
-
-    src: url('//db.onlinewebfonts.com/t/1c45e28f8e86cc89876f003b953cc3e9.eot');
-    src: url('//db.onlinewebfonts.com/t/1c45e28f8e86cc89876f003b953cc3e9.eot?#iefix')
-            format('embedded-opentype'),
-        url('//db.onlinewebfonts.com/t/1c45e28f8e86cc89876f003b953cc3e9.woff2')
-            format('woff2'),
-        url('//db.onlinewebfonts.com/t/1c45e28f8e86cc89876f003b953cc3e9.woff')
-            format('woff'),
-        url('//db.onlinewebfonts.com/t/1c45e28f8e86cc89876f003b953cc3e9.ttf')
-            format('truetype'),
-        url('//db.onlinewebfonts.com/t/1c45e28f8e86cc89876f003b953cc3e9.svg#SF Pro Text')
-            format('svg');
-    font-weight: unset;
-}
 .container {
     width: 100%;
     min-height: 100vh;

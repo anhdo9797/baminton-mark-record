@@ -1,20 +1,16 @@
 import React, { useState } from 'react';
 
-import style from './styles.scss';
-import { Form, Input, message } from 'antd';
-import ButtonCustom from '@/components/Button';
-import { checkPassword } from './checkPass';
+import { Form, Input, message, Button } from 'antd';
+import { checkPassword } from '../checkInputType';
 import { Link } from 'umi';
 
+import styles from '../index.less';
+
 const validateMessages = {
-    required: '${label} is required!',
     types: {
         email: 'Email is not validate email!',
         password: 'Password is not a validate',
         confirmPassword: 'Password is not a validate',
-    },
-    number: {
-        range: '${label} must be between ${min} and ${max}',
     },
 };
 
@@ -24,6 +20,7 @@ const SignUp: React.FC = () => {
         password: '',
         confirmPass: '',
     });
+
     const sigUp = () => {
         const { email, password, confirmPass } = input;
         if (!email || email.indexOf('@gmail.com') == -1) {
@@ -36,17 +33,15 @@ const SignUp: React.FC = () => {
             }
         }
     };
+
     return (
-        <div className="container">
-            <div className={style.sigIn}>
+        <div className={styles.container}>
+            <div>
                 <h1>SMASH</h1>
-                <h3>Create your account to fully experience the app </h3>
+                <h4>Create your account to fully experience the app </h4>
                 <Form validateMessages={validateMessages}>
                     <Form.Item name={['email']} rules={[{ type: 'email' }]}>
-                        <Input
-                            placeholder="Email"
-                            className={style.inputType}
-                        />
+                        <Input placeholder="Email" />
                     </Form.Item>
                     <Form.Item
                         name={['password']}
@@ -64,10 +59,7 @@ const SignUp: React.FC = () => {
                             }),
                         ]}
                     >
-                        <Input.Password
-                            placeholder="Password"
-                            className={style.inputType}
-                        />
+                        <Input.Password placeholder="Password" />
                     </Form.Item>
 
                     <Form.Item
@@ -87,14 +79,13 @@ const SignUp: React.FC = () => {
                             }),
                         ]}
                     >
-                        <Input.Password
-                            placeholder="Confirm password"
-                            className={style.inputType}
-                        />
+                        <Input.Password placeholder="Confirm password" />
                     </Form.Item>
-                    <ButtonCustom label="Sign Up" onClick={sigUp} style={{}} />
+                    <Button type="primary" block onClick={sigUp}>
+                        Sign In
+                    </Button>
                     <Link to="/">
-                        <h4>Already have an account?</h4>
+                        <h5>Already have an account?</h5>
                     </Link>
                 </Form>
             </div>
