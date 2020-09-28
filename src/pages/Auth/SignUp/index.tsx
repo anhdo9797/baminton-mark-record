@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { Form, Input, message, Button } from 'antd';
-import { checkPassword } from '../checkInputType';
+import { checkPassword, rulerConfirm, rulerPassWord } from '../checkInputType';
 import { Link } from 'umi';
 
 import styles from '../index.less';
@@ -38,48 +38,38 @@ const SignUp: React.FC = () => {
         <div className={styles.container}>
             <div>
                 <h1>SMASH</h1>
-                <h4>Create your account to fully experience the app </h4>
+                <h4>Create your account to fully experience the app</h4>
                 <Form validateMessages={validateMessages}>
                     <Form.Item name={['email']} rules={[{ type: 'email' }]}>
-                        <Input placeholder="Email" />
+                        <Input
+                            placeholder="Email"
+                            onChange={text =>
+                                setInput({ ...input, email: text.target.value })
+                            }
+                        />
                     </Form.Item>
-                    <Form.Item
-                        name={['password']}
-                        rules={[
-                            {},
-                            () => ({
-                                validator(rule, value) {
-                                    if (!value || checkPassword(value)) {
-                                        return Promise.resolve();
-                                    }
-                                    return Promise.reject(
-                                        'Password must be 8 characters long and have no special characters!',
-                                    );
-                                },
-                            }),
-                        ]}
-                    >
-                        <Input.Password placeholder="Password" />
+                    <Form.Item name={['password']} rules={rulerPassWord}>
+                        <Input.Password
+                            placeholder="Password"
+                            onChange={text =>
+                                setInput({
+                                    ...input,
+                                    password: text.target.value,
+                                })
+                            }
+                        />
                     </Form.Item>
 
-                    <Form.Item
-                        name={['confirm']}
-                        rules={[
-                            {},
-                            ({ getFieldValue }) => ({
-                                validator(rule, value) {
-                                    if (
-                                        !value ||
-                                        getFieldValue('password') === value
-                                    ) {
-                                        return Promise.resolve();
-                                    }
-                                    return Promise.reject('Incorrect password');
-                                },
-                            }),
-                        ]}
-                    >
-                        <Input.Password placeholder="Confirm password" />
+                    <Form.Item name={['confirm']} rules={rulerConfirm}>
+                        <Input.Password
+                            placeholder="Confirm password"
+                            onChange={text =>
+                                setInput({
+                                    ...input,
+                                    confirmPass: text.target.value,
+                                })
+                            }
+                        />
                     </Form.Item>
                     <Button type="primary" block onClick={sigUp}>
                         Sign In

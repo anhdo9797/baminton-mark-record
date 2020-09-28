@@ -4,7 +4,7 @@ import { Form, Input, Button, message } from 'antd';
 import { Link } from 'umi';
 
 import styles from '../index.less';
-import { checkPassword } from '../checkInputType';
+import { checkPassword, rulerPassWord } from '../checkInputType';
 
 const validateMessages = {
     types: {
@@ -38,22 +38,7 @@ const SignIn: React.FC = () => {
                         }
                     />
                 </Form.Item>
-                <Form.Item
-                    name={['password']}
-                    rules={[
-                        {},
-                        () => ({
-                            validator(rule, value) {
-                                if (!value || checkPassword(value)) {
-                                    return Promise.resolve();
-                                }
-                                return Promise.reject(
-                                    'Password must be 8 characters long and have no special characters!',
-                                );
-                            },
-                        }),
-                    ]}
-                >
+                <Form.Item name={['password']} rules={rulerPassWord}>
                     <Input.Password
                         placeholder="Password"
                         className={styles.inputType}

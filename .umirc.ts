@@ -18,10 +18,10 @@ export default defineConfig({
             path: '/',
             component: '@/layouts/index',
             routes: [
-                {
-                    path: '/',
-                    redirect: '/sign-in',
-                },
+                // {
+                //     path: '/',
+                //     redirect: '/sign-in',
+                // },
                 {
                     path: '/sign-in',
                     component: '@/pages/Auth/SignIn/index',
@@ -33,6 +33,14 @@ export default defineConfig({
                 {
                     path: '/update-profile',
                     component: '@/pages/Auth/UpdateProfile/index',
+                },
+                {
+                    path: '/',
+                    component: '@/pages/HomePage/index',
+                },
+                {
+                    path: '/search-player',
+                    component: '@/pages/SearchPlayer/index',
                 },
             ],
         },
@@ -60,14 +68,11 @@ export default defineConfig({
         'padding-xs': '12px',
         'padding-xss': '8px',
 
-        'margin-lg': '32px',
-        'margin-md': '24px',
-        'margin-sm': '16px',
-        'margin-xs': '12px',
-        'margin-xss': '8px',
-
+        'text-color': '#fff',
+        'text-color-secondary': '#E0E0E0',
         'text-default': '#FFFFFF',
-        'placeholder-color': '#999999',
-        // 'text-question': '#E0E0E0',
+
+        'input-placeholder-color': '#999999',
+        'input-icon-color': '#999999',
     },
 });
