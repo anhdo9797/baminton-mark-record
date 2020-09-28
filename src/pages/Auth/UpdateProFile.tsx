@@ -4,8 +4,6 @@ import style from './styles.scss';
 import { Input, Upload } from 'antd';
 import { FileImageOutlined } from '@ant-design/icons';
 
-import '../../theme.scss';
-
 const UpdateProFile: React.FC<{}> = () => {
     function getBase64(img: string, callback: any) {
         const reader = new FileReader();

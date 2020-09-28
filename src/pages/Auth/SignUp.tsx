@@ -1,7 +1,6 @@
 import React from 'react';
 
 import style from './styles.scss';
-import '../../theme.scss';
 import { Form, Input, message } from 'antd';
 import ButtonCustom from '@/components/Button';
 import { checkPassword } from './checkPass';
