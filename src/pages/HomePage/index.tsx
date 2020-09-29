@@ -4,17 +4,26 @@ import { Row, Button, Modal } from 'antd';
 import styles from './styles.less';
 import { CardEmpty, CardHome } from '@/components/Card/index';
 import SearchPlayer from '../SearchPlayer';
+import { history } from 'umi';
 
 interface PropsHome {
     match: any;
 }
 
 const HomePage: React.FC<PropsHome> = props => {
-    const [playerOnce, setPlayerOnce] = useState();
-    const [playerTow, setPlayerTow] = useState();
+    const [playerOnce, setPlayerOnce] = useState({
+        avatar: '',
+        name: '',
+        active: '',
+    });
+    const [playerTow, setPlayerTow] = useState({
+        avatar: '',
+        name: '',
+        active: '',
+    });
+    const [player, setPlayer] = useState(0);
 
     const [showModal, setShowModal] = useState(false);
-    const [player, setPlayer] = useState(0);
 
     const selectPlayerOnce = () => {
         setShowModal(true);
@@ -32,36 +41,43 @@ const HomePage: React.FC<PropsHome> = props => {
         setShowModal(false);
     };
 
+    const startGame = () => {
+        history.push({
+            pathname: '/playing',
+            state: { playerOnce, playerTow },
+        });
+    };
+
     return (
         <div className={'container'}>
             <div className={styles.homePage}>
                 <h2>Select players</h2>
                 <Row justify="space-between">
-                    {playerOnce ? (
+                    {playerOnce.active ? (
                         <CardHome
                             avatar={playerOnce.avatar}
                             name={playerOnce.name}
+                            onClick={selectPlayerOnce}
                         />
                     ) : (
                         <CardEmpty onClick={selectPlayerOnce} />
                     )}
 
-                    <h2 className={styles.vs}>vs</h2>
+                    <h2 className={styles.vs}>VS</h2>
 
-                    {playerTow ? (
+                    {playerTow.avatar ? (
                         <CardHome
                             avatar={playerTow.avatar}
                             name={playerTow.name}
+                            onClick={selectPlayerTow}
                         />
                     ) : (
                         <CardEmpty onClick={selectPlayerTow} />
                     )}
                 </Row>
 
-                <Row justify="space-between"></Row>
-
-                {playerOnce && playerTow ? (
-                    <Button type="primary" block>
+                {playerOnce.avatar && playerTow.avatar ? (
+                    <Button type="primary" block onClick={startGame}>
                         Start Game
                     </Button>
                 ) : null}

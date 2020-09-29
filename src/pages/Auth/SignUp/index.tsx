@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { Form, Input, message, Button } from 'antd';
 import { checkPassword, rulerConfirm, rulerPassWord } from '../checkInputType';
-import { Link } from 'umi';
+import { history, Link } from 'umi';
 
 import styles from '../index.less';
 
@@ -30,6 +30,8 @@ const SignUp: React.FC = () => {
         } else {
             if (password !== confirmPass) {
                 message.error('Incorrect password');
+            } else {
+                history.push('/update-profile');
             }
         }
     };

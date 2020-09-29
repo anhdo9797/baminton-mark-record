@@ -4,6 +4,7 @@ import styles from '../index.less';
 import { Input, Upload, message, Button } from 'antd';
 
 import Loading from '@/components/Loading/Loading';
+import { history } from 'umi';
 
 const gallery = require('../../../assets/icon/gallery.svg');
 
@@ -65,6 +66,7 @@ const UpdateProFile: React.FC<{}> = () => {
                         type="primary"
                         block
                         className={styles.finishButton}
+                        onClick={() => history.push('/')}
                     >
                         Finish
                     </Button>

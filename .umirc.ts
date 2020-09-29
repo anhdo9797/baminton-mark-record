@@ -34,6 +34,10 @@ export default defineConfig({
                     path: '/',
                     component: '@/pages/HomePage',
                 },
+                {
+                    path: '/playing',
+                    component: '@/pages/Playing',
+                },
             ],
         },
     ],
@@ -55,6 +59,9 @@ export default defineConfig({
         'input-border-color': 'transparent',
         'input-bg': '#333333',
         'input-number-handler-border-color': 'transparent',
+        'input-placeholder-color': '#999999',
+        'input-icon-color': '#999999',
+        'input-color': '#ffc22f',
 
         'padding-lg': '32px',
         'padding-md': '24px',
@@ -65,9 +72,6 @@ export default defineConfig({
         'text-color': '#fff',
         'text-color-secondary': '#E0E0E0',
         'text-default': '#FFFFFF',
-
-        'input-placeholder-color': '#999999',
-        'input-icon-color': '#999999',
 
         'card-background': '#333333',
         'card-radius': '10px',
