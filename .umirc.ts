@@ -18,29 +18,21 @@ export default defineConfig({
             path: '/',
             component: '@/layouts/index',
             routes: [
-                // {
-                //     path: '/',
-                //     redirect: '/sign-in',
-                // },
                 {
                     path: '/sign-in',
-                    component: '@/pages/Auth/SignIn/index',
+                    component: '@/pages/Auth/SignIn',
                 },
                 {
                     path: '/sign-up',
-                    component: '@/pages/Auth/SignUp/index',
+                    component: '@/pages/Auth/SignUp',
                 },
                 {
                     path: '/update-profile',
-                    component: '@/pages/Auth/UpdateProfile/index',
+                    component: '@/pages/Auth/UpdateProfile',
                 },
                 {
                     path: '/',
-                    component: '@/pages/HomePage/index',
-                },
-                {
-                    path: '/search-player',
-                    component: '@/pages/SearchPlayer/index',
+                    component: '@/pages/HomePage',
                 },
             ],
         },
@@ -50,17 +42,19 @@ export default defineConfig({
         black: '#151522',
         'component-background': '#333333',
         'border-radius-base': '5px',
-        'input-border-color': 'transparent',
-        'input-number-handler-border-color': 'transparent',
+
         'select-border-color': 'transparent',
         'select-background': '#333333',
-        'input-bg': '#333333',
         'picker-bg': '#333333',
         'font-family': "'SF Pro Display', sans-serif",
         'height-base': '50px',
         'height-lg': '60px',
         'height-sm': '40px',
         'font-size-base': '16px',
+
+        'input-border-color': 'transparent',
+        'input-bg': '#333333',
+        'input-number-handler-border-color': 'transparent',
 
         'padding-lg': '32px',
         'padding-md': '24px',
@@ -74,5 +68,12 @@ export default defineConfig({
 
         'input-placeholder-color': '#999999',
         'input-icon-color': '#999999',
+
+        'card-background': '#333333',
+        'card-radius': '10px',
+        'card-padding-base': '0',
+        'card-actions-li-margin': '4px 0',
+
+        'modal-content-bg': '#151522',
     },
 });
