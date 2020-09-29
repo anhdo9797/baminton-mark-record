@@ -16,7 +16,7 @@ export default defineConfig({
     routes: [
         {
             path: '/',
-            component: '@/layouts/index',
+            component: '@/layouts',
             routes: [
                 // {
                 //     path: '/',
@@ -24,23 +24,27 @@ export default defineConfig({
                 // },
                 {
                     path: '/sign-in',
-                    component: '@/pages/Auth/SignIn/index',
+                    component: '@/pages/Auth/SignIn',
                 },
                 {
                     path: '/sign-up',
-                    component: '@/pages/Auth/SignUp/index',
+                    component: '@/pages/Auth/SignUp',
                 },
                 {
                     path: '/update-profile',
-                    component: '@/pages/Auth/UpdateProfile/index',
-                },
-                {
-                    path: '/',
-                    component: '@/pages/HomePage/index',
+                    component: '@/pages/Auth/UpdateProfile',
+                    wrappers: ['@/wrappers/auth'],
                 },
                 {
                     path: '/search-player',
-                    component: '@/pages/SearchPlayer/index',
+                    component: '@/pages/SearchPlayer',
+                    wrappers: ['@/wrappers/auth'],
+                },
+                {
+                    path: '/',
+                    exact: true,
+                    component: '@/pages/HomePage',
+                    wrappers: ['@/wrappers/auth'],
                 },
             ],
         },
@@ -74,5 +78,14 @@ export default defineConfig({
 
         'input-placeholder-color': '#999999',
         'input-icon-color': '#999999',
+    },
+    define: {
+        FIREBASE_CONFIG: {
+            apiKey: process.env.FIREBASE_API_KEY,
+            authDomain: `${process.env.FIREBASE_PROJECT_ID}.firebaseapp.com`,
+            databaseURL: `https://${process.env.FIREBASE_PROJECT_ID}.firebaseio.com`,
+            projectId: `${process.env.FIREBASE_PROJECT_ID}`,
+            storageBucket: `${process.env.FIREBASE_PROJECT_ID}.appspot.com`,
+        },
     },
 });

@@ -24,8 +24,8 @@
     "@umijs/plugin-sass": "^1.1.1",
     "@umijs/preset-react": "1.x",
     "@umijs/test": "^3.2.22",
-    "antd-img-crop": "^3.12.0",
-    "formik": "^2.1.5",
+    "antd": "^4.6.6",
+    "firebase": "^7.21.1",
     "lint-staged": "^10.0.7",
     "prettier": "^1.19.1",
     "react": "^16.12.0",
@@ -34,6 +34,3 @@
     "yorkie": "^2.0.0"
   }
 }
-
-
-

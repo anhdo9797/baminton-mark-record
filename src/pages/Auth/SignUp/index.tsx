@@ -1,36 +1,26 @@
 import React, { useState } from 'react';
 
-import { Form, Input, message, Button } from 'antd';
-import { checkPassword, rulerConfirm, rulerPassWord } from '../checkInputType';
-import { Link } from 'umi';
+import { Form, Input, Button } from 'antd';
+import { history, Link, useModel } from 'umi';
 
 import styles from '../index.less';
-
-const validateMessages = {
-    types: {
-        email: 'Email is not validate email!',
-        password: 'Password is not a validate',
-        confirmPassword: 'Password is not a validate',
-    },
-};
+import { register } from '@/services/user';
 
 const SignUp: React.FC = () => {
-    const [input, setInput] = useState({
-        email: '',
-        password: '',
-        confirmPass: '',
-    });
+    const [form] = Form.useForm();
+    const { setInitialState } = useModel('@@initialState');
+    const [loading, setLoading] = useState(false);
 
-    const sigUp = () => {
-        const { email, password, confirmPass } = input;
-        if (!email || email.indexOf('@gmail.com') == -1) {
-            message.error('Please check your email!');
-        } else if (!checkPassword(password)) {
-            message.error('Please check your password!');
-        } else {
-            if (password !== confirmPass) {
-                message.error('Incorrect password');
-            }
+    const onSubmit = async (values: any) => {
+        const { email, password } = values;
+        setLoading(true);
+        const result = await register(email, password);
+        setLoading(false);
+        if (result.uid) {
+            setInitialState({
+                currentUser: result,
+            });
+            history.push('/update-profile');
         }
     };
 
@@ -39,39 +29,64 @@ const SignUp: React.FC = () => {
             <div>
                 <h1>SMASH</h1>
                 <h4>Create your account to fully experience the app</h4>
-                <Form validateMessages={validateMessages}>
-                    <Form.Item name={['email']} rules={[{ type: 'email' }]}>
-                        <Input
-                            placeholder="Email"
-                            onChange={text =>
-                                setInput({ ...input, email: text.target.value })
-                            }
-                        />
+                <Form validateTrigger="onBlur" form={form} onFinish={onSubmit}>
+                    <Form.Item
+                        name="email"
+                        rules={[
+                            {
+                                type: 'email',
+                                message: 'The input is not valid email!',
+                            },
+                            {
+                                required: true,
+                                message: 'Please input your email!',
+                            },
+                        ]}
+                    >
+                        <Input placeholder="Email" />
                     </Form.Item>
-                    <Form.Item name={['password']} rules={rulerPassWord}>
-                        <Input.Password
-                            placeholder="Password"
-                            onChange={text =>
-                                setInput({
-                                    ...input,
-                                    password: text.target.value,
-                                })
-                            }
-                        />
+                    <Form.Item
+                        name="password"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input your password!',
+                            },
+                        ]}
+                    >
+                        <Input.Password placeholder="Password" />
                     </Form.Item>
-
-                    <Form.Item name={['confirm']} rules={rulerConfirm}>
-                        <Input.Password
-                            placeholder="Confirm password"
-                            onChange={text =>
-                                setInput({
-                                    ...input,
-                                    confirmPass: text.target.value,
-                                })
-                            }
-                        />
+                    <Form.Item
+                        name="confirm"
+                        dependencies={['password']}
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please confirm your password!',
+                            },
+                            ({ getFieldValue }) => ({
+                                validator(rule, value) {
+                                    if (
+                                        !value ||
+                                        getFieldValue('password') === value
+                                    ) {
+                                        return Promise.resolve();
+                                    }
+                                    return Promise.reject(
+                                        'The two passwords that you entered do not match!',
+                                    );
+                                },
+                            }),
+                        ]}
+                    >
+                        <Input.Password placeholder="Confirm password" />
                     </Form.Item>
-                    <Button type="primary" block onClick={sigUp}>
+                    <Button
+                        type="primary"
+                        block
+                        htmlType="submit"
+                        loading={loading}
+                    >
                         Sign In
                     </Button>
                     <Link to="/">
