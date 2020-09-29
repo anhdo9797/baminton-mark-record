@@ -1,0 +1,52 @@
+.modeCard {
+    width: 38vw !important;
+    max-width: 260px;
+    text-align: left;
+    filter: drop-shadow(0px 16px 16px rgba(50, 50, 71, 0.08)),
+        drop-shadow(0px 24px 32px rgba(50, 50, 71, 0.08));
+    margin-bottom: 16px;
+    img {
+        border-radius: 10px;
+    }
+    h3 {
+        font-size: 16px;
+        font-weight: 600;
+        color: @text-color-secondary;
+        margin: 4px 16px;
+    }
+    h4 {
+        font-size: 12px;
+        margin-top: 0;
+        color: @input-placeholder-color;
+        margin: 4px 16px;
+    }
+}
+
+.cardHome {
+    .modeCard();
+    text-align: center;
+    width: 34vw !important;
+    max-width: 220px;
+    filter: drop-shadow(0px 5px 5px rgba(0, 0, 0, 0.2)),
+        drop-shadow(0px 8px 8px rgba(0, 0, 0, 0.2));
+    box-shadow: 0px 8px 8px 0px #000000 20%;
+}
+
+.cardEmpty {
+    .cardHome();
+    height: 34vw;
+    max-height: 220px;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    transition: 0.4s ease;
+    img {
+        width: 64px;
+        height: 64px;
+    }
+
+    &:hover {
+        border: 1px solid @primary-color;
+    }
+}

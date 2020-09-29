@@ -1,40 +1,18 @@
 .homePage {
-    h3 {
+    h2 {
         color: @primary-color;
         font-size: 34px;
         font-weight: 600;
         margin-bottom: 32px;
     }
 
-    .cardUser {
-        width: 34vw;
-        max-width: 220px;
-        max-height: 220px;
-        display: flex;
-        height: 34vw;
-        border-radius: @border-radius-base;
-        background-color: @component-background;
-        cursor: pointer;
-        transition: width 2s, height 4s;
-        .emptyUser {
-            width: 64px;
-            height: 64px;
-            margin: auto;
-        }
-    }
-    .cardUser:hover {
-        border: 1px solid @primary-color;
-        .emptyUser {
-            transform: scale(1.05);
-        }
+    button {
+        margin: 44px 0;
     }
 
     .vs {
         color: @primary-color;
         font-size: 20px;
         margin: auto 0;
-    }
-    button {
-        margin: 44px 0;
     }
 }
