@@ -1,27 +1,26 @@
 import React, { useState } from 'react';
 
 import { Form, Input, Button, message } from 'antd';
-import { Link } from 'umi';
+import { history, Link, useModel } from 'umi';
 
 import styles from '../index.less';
-import { checkPassword, rulerPassWord } from '../checkInputType';
-
-const validateMessages = {
-    types: {
-        email: 'Please enter a valid email!',
-        password: 'Password is not a validate',
-        confirmPassword: 'Password is not a validate',
-    },
-};
+import { login } from '@/services/user';
 
 const SignIn: React.FC = () => {
-    const [input, setInput] = useState({ email: '', password: '' });
+    const [form] = Form.useForm();
+    const { setInitialState } = useModel('@@initialState');
+    const [loading, setLoading] = useState(false);
 
-    const signIn = () => {
-        if (!input.email || input.email.indexOf('@gmail.com') == -1) {
-            message.error('Please check your email!');
-        } else if (!checkPassword(input.password)) {
-            message.error('Please check your password!');
+    const onSubmit = async (values: any) => {
+        const { email, password } = values;
+        setLoading(true);
+        const result = await login(email, password);
+        setLoading(false);
+        if (result.uid) {
+            setInitialState({
+                currentUser: result,
+            });
+            history.push('/');
         }
     };
 
@@ -29,28 +28,39 @@ const SignIn: React.FC = () => {
         <div className={styles.container}>
             <h1>SMASH</h1>
             <h4>Welcome back!</h4>
-            <Form validateMessages={validateMessages}>
-                <Form.Item name={['email']} rules={[{ type: 'email' }]}>
-                    <Input
-                        placeholder="Email"
-                        onChange={text =>
-                            setInput({ ...input, email: text.target.value })
-                        }
-                    />
+            <Form validateTrigger="onBlur" form={form} onFinish={onSubmit}>
+                <Form.Item
+                    name="email"
+                    rules={[
+                        {
+                            type: 'email',
+                            message: 'The input is not valid email!',
+                        },
+                        {
+                            required: true,
+                            message: 'Please input your email!',
+                        },
+                    ]}
+                >
+                    <Input placeholder="Email" />
                 </Form.Item>
-                <Form.Item name={['password']} rules={rulerPassWord}>
-                    <Input.Password
-                        placeholder="Password"
-                        className={styles.inputType}
-                        onChange={text =>
-                            setInput({
-                                ...input,
-                                password: text.target.value,
-                            })
-                        }
-                    />
+                <Form.Item
+                    name="password"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input your password!',
+                        },
+                    ]}
+                >
+                    <Input.Password placeholder="Password" />
                 </Form.Item>
-                <Button type="primary" block onClick={signIn}>
+                <Button
+                    type="primary"
+                    block
+                    htmlType="submit"
+                    loading={loading}
+                >
                     Sign In
                 </Button>
                 <Link to="/sign-up">

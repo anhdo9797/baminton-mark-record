@@ -12,13 +12,13 @@ interface PropsHome {
 
 const HomePage: React.FC<PropsHome> = props => {
     const [playerOnce, setPlayerOnce] = useState({
-        avatar: '',
-        name: '',
+        photoURL: '',
+        displayName: '',
         active: '',
     });
     const [playerTow, setPlayerTow] = useState({
-        avatar: '',
-        name: '',
+        photoURL: '',
+        displayName: '',
         active: '',
     });
     const [player, setPlayer] = useState(0);
@@ -53,10 +53,10 @@ const HomePage: React.FC<PropsHome> = props => {
             <div className={styles.homePage}>
                 <h2>Select players</h2>
                 <Row justify="space-between">
-                    {playerOnce.active ? (
+                    {playerOnce.photoURL ? (
                         <CardHome
-                            avatar={playerOnce.avatar}
-                            name={playerOnce.name}
+                            avatar={playerOnce.photoURL}
+                            name={playerOnce.displayName}
                             onClick={selectPlayerOnce}
                         />
                     ) : (
@@ -65,10 +65,10 @@ const HomePage: React.FC<PropsHome> = props => {
 
                     <h2 className={styles.vs}>VS</h2>
 
-                    {playerTow.avatar ? (
+                    {playerTow.photoURL ? (
                         <CardHome
-                            avatar={playerTow.avatar}
-                            name={playerTow.name}
+                            avatar={playerTow.photoURL}
+                            name={playerTow.displayName}
                             onClick={selectPlayerTow}
                         />
                     ) : (

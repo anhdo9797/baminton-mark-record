@@ -16,7 +16,7 @@ export default defineConfig({
     routes: [
         {
             path: '/',
-            component: '@/layouts/index',
+            component: '@/layouts',
             routes: [
                 {
                     path: '/sign-in',
@@ -29,10 +29,18 @@ export default defineConfig({
                 {
                     path: '/update-profile',
                     component: '@/pages/Auth/UpdateProfile',
+                    wrappers: ['@/wrappers/auth'],
+                },
+                {
+                    path: '/search-player',
+                    component: '@/pages/SearchPlayer',
+                    wrappers: ['@/wrappers/auth'],
                 },
                 {
                     path: '/',
+                    exact: true,
                     component: '@/pages/HomePage',
+                    wrappers: ['@/wrappers/auth'],
                 },
                 {
                     path: '/playing',
@@ -79,5 +87,14 @@ export default defineConfig({
         'card-actions-li-margin': '4px 0',
 
         'modal-content-bg': '#151522',
+    },
+    define: {
+        FIREBASE_CONFIG: {
+            apiKey: process.env.FIREBASE_API_KEY,
+            authDomain: `${process.env.FIREBASE_PROJECT_ID}.firebaseapp.com`,
+            databaseURL: `https://${process.env.FIREBASE_PROJECT_ID}.firebaseio.com`,
+            projectId: `${process.env.FIREBASE_PROJECT_ID}`,
+            storageBucket: `${process.env.FIREBASE_PROJECT_ID}.appspot.com`,
+        },
     },
 });

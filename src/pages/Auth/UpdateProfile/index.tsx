@@ -1,76 +1,111 @@
+import { updateProfile, uploadAvatar } from '@/services/user';
+import { Button, Form, Input, Upload } from 'antd';
 import React, { useState } from 'react';
+import { history, useModel } from 'umi';
 import styles from '../index.less';
-
-import { Input, Upload, message, Button } from 'antd';
-
-import Loading from '@/components/Loading/Loading';
-import { history } from 'umi';
 
 const gallery = require('../../../assets/icon/gallery.svg');
 
-function getBase64(img: Blob, callback: any) {
+const getBase64 = (img: File, callback: Function) => {
     const reader = new FileReader();
     reader.addEventListener('load', () => callback(reader.result));
     reader.readAsDataURL(img);
-}
+};
 
 const UpdateProFile: React.FC<{}> = () => {
+    const [form] = Form.useForm();
     const [avatar, setAvatar] = useState('');
     const [name, setName] = useState('');
     const [loading, setLoading] = useState(false);
+    const { initialState } = useModel('@@initialState');
+    const { currentUser } = initialState;
 
-    const handleChange = (info: any) => {
-        if (info.file.status === 'uploading') {
-            setLoading(true);
-            return;
+    const normFile = e => {
+        if (e.file) {
+            getBase64(e.file.originFileObj, (imageUrl: string) =>
+                setAvatar(imageUrl),
+            );
         }
-        if (info.file.status === 'done') {
-            getBase64(info.file.originFileObj, (imageUrl: any) => {
-                setAvatar(imageUrl);
-                setLoading(false);
-            });
+        if (Array.isArray(e)) {
+            return e;
         }
-        if (info.file.status === 'error') {
-            message.error('Upload fail, please try another image!');
+        return e && e.fileList;
+    };
+
+    const onSubmit = async (values: any) => {
+        const { name, avatar } = values;
+        setLoading(true);
+        const photoURL = await uploadAvatar(
+            avatar[0].originFileObj,
+            currentUser.uid,
+        );
+        if (photoURL) {
+            const result = await updateProfile(name, photoURL);
             setLoading(false);
+            if (result.uid) {
+                history.push('/');
+            }
         }
+        setLoading(false);
     };
 
     return (
         <div className={styles.container}>
             <div className={styles.updateProFile}>
                 <h2> Set up your profile </h2>
-                <h3> What’s your name? </h3>
-                <Input
-                    className={styles.inputName}
-                    placeholder="Type you name"
-                    onChange={name => setName(name.target.value)}
-                />
-                <h3> Your avatar? </h3>
-                <Upload
-                    name="avatar"
-                    className="avatar-uploader"
-                    showUploadList={false}
-                    onChange={handleChange}
-                >
-                    {avatar ? (
-                        <img src={avatar} className={'ant-upload'} />
-                    ) : loading ? (
-                        <Loading />
-                    ) : (
-                        <img src={gallery} />
-                    )}
-                </Upload>
-                {avatar && name ? (
+                <Form validateTrigger="onBlur" form={form} onFinish={onSubmit}>
+                    <h3> What’s your name? </h3>
+                    <Form.Item
+                        name="name"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input your name!',
+                            },
+                        ]}
+                    >
+                        <Input
+                            className={styles.inputName}
+                            onChange={e => setName(e.target.value)}
+                            placeholder="Type you name"
+                        />
+                    </Form.Item>
+                    <h3>Your avatar?</h3>
+                    <Form.Item
+                        name="avatar"
+                        valuePropName="fileList"
+                        getValueFromEvent={normFile}
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please select your avatar!',
+                            },
+                        ]}
+                    >
+                        <Upload
+                            name="avatar"
+                            className={styles.upload}
+                            showUploadList={false}
+                        >
+                            <img
+                                src={avatar || gallery}
+                                className={avatar ? styles.active : ''}
+                            />
+                        </Upload>
+                    </Form.Item>
                     <Button
+                        style={{
+                            visibility: avatar && name ? 'visible' : 'hidden',
+                        }}
                         type="primary"
                         block
                         className={styles.finishButton}
-                        onClick={() => history.push('/')}
+                        htmlType="submit"
+                        loading={loading}
                     >
                         Finish
                     </Button>
-                ) : null}
+                </Form>
             </div>
         </div>
     );
