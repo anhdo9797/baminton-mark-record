@@ -43,7 +43,7 @@ export default defineConfig({
                     wrappers: ['@/wrappers/auth'],
                 },
                 {
-                    path: '/playing',
+                    path: '/playing/:roomId',
                     component: '@/pages/Playing',
                 },
             ],

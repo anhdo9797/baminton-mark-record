@@ -5,6 +5,7 @@ import styles from './styles.less';
 import { CardEmpty, CardHome } from '@/components/Card/index';
 import SearchPlayer from '../SearchPlayer';
 import { history } from 'umi';
+import { creatRoom } from '@/services/game';
 
 interface PropsHome {
     match: any;
@@ -14,12 +15,10 @@ const HomePage: React.FC<PropsHome> = props => {
     const [playerOnce, setPlayerOnce] = useState({
         photoURL: '',
         displayName: '',
-        active: '',
     });
     const [playerTow, setPlayerTow] = useState({
         photoURL: '',
         displayName: '',
-        active: '',
     });
     const [player, setPlayer] = useState(0);
 
@@ -41,10 +40,10 @@ const HomePage: React.FC<PropsHome> = props => {
         setShowModal(false);
     };
 
-    const startGame = () => {
+    const startGame = async () => {
+        const roomId = await creatRoom(playerOnce, playerTow);
         history.push({
-            pathname: '/playing',
-            state: { playerOnce, playerTow },
+            pathname: `/playing/${roomId}`,
         });
     };
 
@@ -76,14 +75,18 @@ const HomePage: React.FC<PropsHome> = props => {
                     )}
                 </Row>
 
-                {playerOnce.avatar && playerTow.avatar ? (
+                {playerOnce.photoURL && playerTow.photoURL ? (
                     <Button type="primary" block onClick={startGame}>
                         Start Game
                     </Button>
                 ) : null}
 
                 <Modal visible={showModal}>
-                    <SearchPlayer selectUser={completeSelect} />
+                    <SearchPlayer
+                        selectUser={completeSelect}
+                        playerOnce={playerOnce}
+                        playerTow={playerTow}
+                    />
                 </Modal>
             </div>
         </div>

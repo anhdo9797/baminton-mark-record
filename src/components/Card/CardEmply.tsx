@@ -9,19 +9,17 @@ interface PropsCard {
 
 const CardEmpty: React.FC<PropsCard> = ({ onClick }) => {
     return (
-        <Tooltip title="search for user">
-            <Card
-                hoverable
-                className={styles.cardEmpty}
-                onClick={onClick}
-                cover={
-                    <img
-                        alt="example"
-                        src={require('../../assets/icon/emptyUser.svg')}
-                    />
-                }
-            />
-        </Tooltip>
+        <Card
+            hoverable
+            className={styles.cardEmpty}
+            onClick={onClick}
+            cover={
+                <img
+                    alt="example"
+                    src={require('../../assets/icon/emptyUser.svg')}
+                />
+            }
+        />
     );
 };
 

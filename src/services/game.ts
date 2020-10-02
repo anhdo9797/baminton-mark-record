@@ -1,39 +1,53 @@
 import { message } from 'antd';
+import { functions } from 'firebase';
 import { firestore } from './firebase';
-const useRef = firestore.collection('users');
 
-export const searchPlayer = async (name: string) => {
+const useRef = firestore.collection('games');
+const refUsers = (uid: string) => firestore.doc(`users/${uid}`);
+
+export const creatRoom = async (playerOnce: object, playerTow: object) => {
     try {
-        let snapshot = await useRef.where('displayName', '==', name).get();
-        console.log(snapshot);
-
-        if (snapshot.empty) {
-            message.error('No match documents.');
-            return;
-        }
-
-        snapshot.forEach(doc => {
-            console.log(doc.id, '=>', doc.data());
+        const room = await useRef.add({
+            createdAt: new Date(),
+            players: [refUsers(playerOnce.uid), refUsers(playerTow.uid)],
         });
+
+        return room.id;
     } catch (error) {
         message.error(error.message);
+        console.log('=======creatRoom========', error.message);
     }
 };
 
-export const getPlayer = async () => {
+export const getPlayersInRoom = async (roomId: string) => {
     try {
-        let snapshot = await useRef.get();
+        let data = await useRef.doc(roomId).get();
+        let { players } = data.data() || {};
 
-        if (snapshot.empty) {
-            message.error('Connection errors');
-        }
+        let player1 = (await players[0].get()) as User;
+        let player2 = (await players[1].get()) as User;
 
-        let listPlayer: any[] = [];
-        snapshot.forEach(doc => {
-            listPlayer.push(doc.data());
+        return [player1.data(), player2.data()];
+    } catch (error) {
+        message.error(error.message);
+        return [];
+    }
+};
+
+export const endGame = async (
+    set1: any,
+    set2: any,
+    set3: any,
+    roomId: string,
+) => {
+    try {
+        await useRef.doc(roomId).update({
+            set1: set1.value1 + ':' + set1.value2,
+            set2: set2.value1 + ':' + set2.value2,
+            set3: set3.value1 + ':' + set3.value2,
+
+            endAt: new Date(),
         });
-
-        return listPlayer;
     } catch (error) {
         message.error(error.message);
     }

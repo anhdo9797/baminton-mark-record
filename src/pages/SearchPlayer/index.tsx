@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { SearchOutlined } from '@ant-design/icons';
-import { history, useLocation } from 'umi';
 import { Input, Button, Form } from 'antd';
 
 import styles from './style.less';
 import Card from '@/components/Card/CardSearch';
-import { searchData } from '@/mock/dataSearch';
-import { getPlayer, searchPlayer } from '@/services/game';
+import { getPlayers } from '@/services/user';
 
 interface PropsSearch {
     selectUser: any;
+    playerOnce: any;
+    playerTow: any;
 }
 
-const SearchPlayer: React.FC<PropsSearch> = ({ selectUser }) => {
+const SearchPlayer: React.FC<PropsSearch> = ({
+    selectUser,
+    playerOnce,
+    playerTow,
+}) => {
     const [form] = Form.useForm();
     const [listPlayer, setListPlayer] = useState([]);
 
@@ -21,19 +25,25 @@ const SearchPlayer: React.FC<PropsSearch> = ({ selectUser }) => {
     }, []);
 
     const getListPlayer = async () => {
-        const list = await getPlayer();
+        const list = await getPlayers();
+
         setListPlayer(list);
     };
 
     const onSubmit = async (value: any) => {
         let { name } = value;
 
-        let getSearch = listPlayer.find(
+        let getSearch = listPlayer.filter(
             (e: any) =>
                 e.displayName.toUpperCase().indexOf(name.toUpperCase()) != -1,
         );
         setListPlayer(getSearch);
     };
+
+    //hidden user1 and use 2
+    const restPlayer = listPlayer.filter(
+        e => e != playerOnce && e != playerTow,
+    );
 
     return (
         <div className="container">
@@ -56,7 +66,7 @@ const SearchPlayer: React.FC<PropsSearch> = ({ selectUser }) => {
                 </Form>
 
                 <div className={styles.listUser}>
-                    {listPlayer.map((e: any, i) => (
+                    {restPlayer.map((e: any, i) => (
                         <Card
                             name={e.displayName}
                             avatar={e.photoURL}

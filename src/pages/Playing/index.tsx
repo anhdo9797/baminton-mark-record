@@ -1,17 +1,30 @@
-import React, { useState } from 'react';
-import { Row, InputNumber } from 'antd';
-import { CardEmpty, CardHome } from '@/components/Card/index';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Row, InputNumber, Button } from 'antd';
+import { CardHome } from '@/components/Card/index';
 
 import styles from '../HomePage/styles.less';
 import stylesPage from './styles.less';
-import { useLocation } from 'umi';
+import { useParams } from 'umi';
+import { endGame, getPlayersInRoom } from '@/services/game';
 
 interface PropsSet {
     setValueOnce: any;
     setValueTow: any;
+    set: number;
+    disabled?: boolean;
 }
 
-const WrapSet: React.FC<PropsSet> = ({ setValueOnce, setValueTow }) => {
+interface set {
+    value1: number;
+    value2: number;
+}
+
+const WrapSet: React.FC<PropsSet> = ({
+    setValueOnce,
+    setValueTow,
+    set,
+    disabled,
+}) => {
     return (
         <Row justify="space-between" className={stylesPage.setTow}>
             <InputNumber
@@ -20,25 +33,67 @@ const WrapSet: React.FC<PropsSet> = ({ setValueOnce, setValueTow }) => {
                 min={1}
                 max={30}
                 onChange={setValueOnce}
+                disabled={disabled}
             />
-            <p className={stylesPage.set}>set 1</p>
+            <p className={stylesPage.set}>set {set} </p>
             <InputNumber
                 min={1}
                 max={30}
                 className={stylesPage.inputType}
                 placeholder="Enter points"
                 onChange={setValueTow}
+                disabled={disabled}
             />
         </Row>
     );
 };
 
 const Playing: React.FC = () => {
-    let state = useLocation().state;
-    let { playerOnce, playerTow } = state;
+    let { roomId } = useParams();
 
-    const [valueOce, setValueOnce] = useState();
-    const [valueTow, setValueTow] = useState();
+    const [player1, setPlayer1] = useState<User>();
+    const [player2, setPlayer2] = useState<User>();
+
+    const [set1, setSet1] = useState<set>({ value1: 0, value2: 0 });
+    const [set2, setSet2] = useState<set>({
+        value1: 0,
+        value2: 0,
+    });
+    const [set3, setSet3] = useState<set>({ value1: 0, value2: 0 });
+
+    const initData = async () => {
+        const players = await getPlayersInRoom(roomId);
+
+        setPlayer1(players[0]);
+        setPlayer2(players[1]);
+    };
+
+    useEffect(() => {
+        initData();
+    }, []);
+
+    useEffect(() => {});
+
+    const endSet = (set: set) => {
+        let { value1, value2 } = set;
+        if (value1 - value2 == 2 && value2 > 20) {
+            return true;
+        } else if (value2 - value1 == 2 && value1 > 20) {
+            return true;
+        } else {
+            if (value1 == 30) {
+                return true;
+            } else if (value2 == 30) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    };
+
+    const complete = async () => {
+        await endGame(set1, set1, set3, roomId);
+    };
 
     return (
         <div className="container">
@@ -47,42 +102,58 @@ const Playing: React.FC = () => {
 
                 <Row justify="space-between">
                     <CardHome
-                        avatar={playerOnce.avatar}
-                        name={playerOnce.name}
-                        onClick={() => {}}
-                        noneToolTip={true}
+                        avatar={player1?.photoURL || ''}
+                        name={player1?.displayName || ''}
                     />
 
-                    <h2 className={styles.vs}>VS</h2>
+                    <h2>VS</h2>
 
                     <CardHome
-                        avatar={playerTow.avatar}
-                        name={playerTow.name}
-                        onClick={() => {}}
-                        noneToolTip={true}
-                    />
-                </Row>
-
-                <Row justify="space-between" className={stylesPage.setOnce}>
-                    <InputNumber
-                        className={stylesPage.inputType}
-                        placeholder="Enter points"
-                        min={1}
-                        max={30}
-                    />
-                    <p className={stylesPage.set}>set 1</p>
-                    <InputNumber
-                        min={1}
-                        max={30}
-                        className={stylesPage.inputType}
-                        placeholder="Enter points"
+                        avatar={player2?.photoURL || ''}
+                        name={player2?.displayName || ''}
                     />
                 </Row>
 
                 <WrapSet
-                    setValueOnce={setValueOnce}
-                    setValueTow={setValueTow}
+                    set={1}
+                    setValueOnce={(value1: number) =>
+                        setSet1({ ...set1, value1 })
+                    }
+                    setValueTow={(value2: number) =>
+                        setSet1({ ...set1, value2 })
+                    }
+                    disabled={endSet(set1)}
                 />
+
+                {endSet(set1) ? (
+                    <WrapSet
+                        set={2}
+                        setValueOnce={(value1: number) =>
+                            setSet2({ ...set2, value1 })
+                        }
+                        setValueTow={(value2: number) =>
+                            setSet2({ ...set3, value2 })
+                        }
+                        disabled={endSet(set2)}
+                    />
+                ) : null}
+
+                {endSet(set2) ? (
+                    <WrapSet
+                        set={3}
+                        setValueOnce={(value1: number) =>
+                            setSet3({ ...set3, value1 })
+                        }
+                        setValueTow={(value2: number) =>
+                            setSet3({ ...set1, value2 })
+                        }
+                        disabled={endSet(set3)}
+                    />
+                ) : null}
+
+                <Button type={'primary'} onClick={complete}>
+                    End game
+                </Button>
             </div>
         </div>
     );

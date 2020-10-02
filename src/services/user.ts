@@ -62,4 +62,23 @@ export const updateProfile = async (displayName: string, photoURL: string) => {
     }
 };
 
+export const getPlayers = async () => {
+    try {
+        let snapshot = await usersRef.get();
+
+        if (snapshot.empty) {
+            message.error('Connection errors');
+        }
+
+        let listPlayer: any[] = [];
+        snapshot.forEach(doc => {
+            listPlayer.push(doc.data());
+        });
+
+        return listPlayer;
+    } catch (error) {
+        message.error(error.message);
+    }
+};
+
 export const logout = () => auth.signOut();
