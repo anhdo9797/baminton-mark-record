@@ -15,12 +15,11 @@ const CardHome: React.FC<PropsCard> = ({ name, avatar, onClick }) => {
         <Card
             hoverable
             className={styles.cardHome}
-            cover={<img alt="example" src={avatar} />}
+            cover={<img src={avatar} />}
             onClick={onClick}
         >
             <h3>{name} </h3>
         </Card>
-        // </Tooltip>
     );
 };
 

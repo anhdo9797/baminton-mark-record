@@ -58,7 +58,7 @@ const isEndSet = (points = [0, 0]) => {
     return (
         first == 25 ||
         second == 25 ||
-        (first > 19 && second > 19 && Math.abs(first - second) > 1)
+        ((first > 20 || second > 20) && Math.abs(first - second) > 1)
     );
 };
 
@@ -73,6 +73,7 @@ const getWinner = (
     Object.values(sets).forEach(set => {
         if (isEndSet(set)) roundWin[set[0] > set[1] ? 0 : 1]++;
     });
+    if (roundWin[0] + roundWin[1] < 2) return 2;
     return roundWin[0] == roundWin[1] ? 2 : roundWin[0] > roundWin[1] ? 0 : 1;
 };
 
@@ -106,21 +107,32 @@ const Playing: React.FC = () => {
     });
 
     const submitEndGame = async () => {
-        await endGame(roomId, sets, players[getWinner(sets)]);
+        const winner = getWinner(sets);
+        const res = await endGame(
+            roomId,
+            sets,
+            players[winner],
+            Object.values(sets).reduce((acc, cur) => {
+                return acc + cur[winner];
+            }, 0),
+        );
+        if (res) history.push('/top-players');
     };
 
     const show = (index: number) => {
-        // return index == 0 || isEndSet(sets[index]);
+        if (getWinner(sets) != 2 && index == 2 && !isEndSet(sets[index]))
+            return false;
+        return index == 0 || isEndSet(sets[index]);
         // if (index == 0) {
         //     return true;
         // } else if (isEndSet(sets[0])) {
         //     return getWinner(sets) == 2;
         // }
-        if (index == 0) {
-            return true;
-        } else if (isEndSet(sets[1])) {
-            return getWinner(sets) != 2;
-        }
+        // if (index == 0) {
+        //     return true;
+        // } else if (isEndSet(sets[1])) {
+        //     return getWinner(sets) != 2;
+        // }
     };
 
     return (
@@ -157,9 +169,12 @@ const Playing: React.FC = () => {
                         show={show(index)}
                     />
                 ))}
-
                 <b>Winner: {players[getWinner(sets)]?.displayName}</b>
-                <Button type="primary" onClick={submitEndGame}>
+                <Button
+                    type="primary"
+                    disabled={getWinner(sets) == 2}
+                    onClick={submitEndGame}
+                >
                     End game
                 </Button>
             </div>

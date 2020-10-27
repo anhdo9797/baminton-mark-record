@@ -42,9 +42,7 @@ const HomePage: React.FC<PropsHome> = props => {
 
     const startGame = async () => {
         const roomId = await creatRoom(playerOnce, playerTow);
-        history.push({
-            pathname: `/playing/${roomId}`,
-        });
+        history.push(`/playing/${roomId}`);
     };
 
     return (
