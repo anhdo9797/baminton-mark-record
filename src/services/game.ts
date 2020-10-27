@@ -1,5 +1,4 @@
 import { message } from 'antd';
-import { functions } from 'firebase';
 import { firestore } from './firebase';
 
 const useRef = firestore.collection('games');
@@ -39,6 +38,8 @@ export const endGame = async (
     set2: any,
     set3: any,
     roomId: string,
+    uid1: string,
+    uid2: string,
 ) => {
     try {
         await useRef.doc(roomId).update({
@@ -47,6 +48,14 @@ export const endGame = async (
             set3: set3.value1 + ':' + set3.value2,
 
             endAt: new Date(),
+        });
+
+        await firestore.doc(`users/${uid1}`).update({
+            score: set1.value1 + set2.value1 + set3.value1,
+        });
+
+        await firestore.doc(`users/${uid2}`).update({
+            score: set1.value2 + set2.value2 + set3.value2,
         });
     } catch (error) {
         message.error(error.message);

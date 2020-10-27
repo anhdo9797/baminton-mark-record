@@ -45,6 +45,12 @@ export default defineConfig({
                 {
                     path: '/playing/:roomId',
                     component: '@/pages/Playing',
+                    wrappers: ['@/wrappers/auth'],
+                },
+                {
+                    path: '/top-players',
+                    component: '@/pages/TopPlayers',
+                    // wrappers: ['@/wrappers/auth'],
                 },
             ],
         },
