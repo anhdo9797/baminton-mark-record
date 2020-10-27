@@ -33,21 +33,12 @@ export const getPlayersInRoom = async (roomId: string) => {
     }
 };
 
-export const endGame = async (
-    set1: any,
-    set2: any,
-    set3: any,
-    roomId: string,
-    uid1: string,
-    uid2: string,
-) => {
+export const endGame = async (roomId: string, sets: {}, winner: User) => {
     try {
         await useRef.doc(roomId).update({
-            set1: set1.value1 + ':' + set1.value2,
-            set2: set2.value1 + ':' + set2.value2,
-            set3: set3.value1 + ':' + set3.value2,
-
-            endAt: new Date(),
+            sets,
+            winner: refUsers(winner.uid),
+            finishedAt: new Date(),
         });
 
         await firestore.doc(`users/${uid1}`).update({
