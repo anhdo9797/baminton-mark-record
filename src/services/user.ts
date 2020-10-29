@@ -6,6 +6,11 @@ const usersRef = firestore.collection('users');
 export const login = async (email: string, password: string) => {
     try {
         const user = await auth.signInWithEmailAndPassword(email, password);
+
+        console.log('user', user.user);
+
+        localStorage.setItem('user', JSON.stringify(user?.user));
+
         return user.user;
     } catch (error) {
         message.error(error.message);

@@ -40,6 +40,8 @@ export const endGame = async (
     score = 0,
 ) => {
     try {
+        console.log('score', score);
+
         await useRef.doc(roomId).update({
             sets,
             winner: refUsers(winner.uid),

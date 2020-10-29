@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Col } from 'antd';
+import { Row, Col, Button } from 'antd';
+import { history } from 'umi';
 
 import styles from '../HomePage/styles.less';
 import style from './styles.less';
 
 import { getPlayers } from '@/services/user';
+import { LeftOutlined } from '@ant-design/icons';
 
 const colors = [
     '#fbc02d',
@@ -15,12 +17,18 @@ const colors = [
     '#fff9c4',
 ];
 
+const formatNumber = (number: number) =>
+    new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(
+        number,
+    );
+
 const Player: React.FC<{
     avatar: string;
     places: any;
     name: string;
     score?: number;
-}> = ({ avatar, places, name, score }) => {
+    uid?: string;
+}> = ({ avatar, places, name, score, uid }) => {
     const bg = places > 5 ? colors[5] : colors[places];
     const st =
         places == 1 ? 'st' : places == 2 ? 'nd' : places == 3 ? 'rd' : 'th';
@@ -35,8 +43,8 @@ const Player: React.FC<{
                 </div>
             </Col>
             <Col className={style.wrapText}>
-                <p className={style.name}>{name} </p>
-                <p className={style.score}>{score} pts </p>
+                <p className={style.name}>{name}</p>
+                <p className={style.score}>{formatNumber(score || 0)} pts </p>
             </Col>
         </Row>
     );
@@ -45,6 +53,13 @@ const Player: React.FC<{
 const TopPlayer: React.FC = () => {
     //?=====STATE==========
     const [topUsers, setTopUser] = useState([]);
+
+    const local = localStorage.getItem('user');
+    const profile = JSON.parse(local || '');
+
+    useEffect(() => {
+        console.log('local', profile);
+    }, []);
 
     useEffect(() => {
         getTopPlayer();
@@ -64,18 +79,34 @@ const TopPlayer: React.FC = () => {
         }
     };
 
+    const getName = (user: User) => {
+        if (user.uid === profile.uid) return `${user.displayName} (you)`;
+        return user.displayName;
+    };
+
     return (
         <div className="container">
             <div className={styles.homePage}>
-                <h2>Top Players</h2>
-                {topUsers.map((user: User, key) => (
-                    <Player
-                        name={user.displayName || ''}
-                        score={user.score || ''}
-                        avatar={user.photoURL || ''}
-                        places={key + 1}
+                <Row justify="space-between" className={style.header}>
+                    <Button
+                        onClick={() => history.push('/')}
+                        icon={<LeftOutlined />}
+                        className={style.backButton}
                     />
-                ))}
+                    <h2>Top Players</h2>
+                    <h2 />
+                </Row>
+                <div className={style.wrapPlayers}>
+                    {topUsers.map((user: User, key) => (
+                        <Player
+                            name={getName(user)}
+                            score={user.score || ''}
+                            avatar={user.photoURL || ''}
+                            places={key + 1}
+                            uid={user.uid}
+                        />
+                    ))}
+                </div>
             </div>
         </div>
     );

@@ -57,7 +57,20 @@
 }
 .userItem:hover {
     .avatar {
-        box-shadow: 1px 1px #ffc22f;
+        box-shadow: 1px 1px @primary-color;
         transform: scale(1.01);
     }
+}
+.backButton {
+    border: none;
+    color: @primary-color;
+    margin: 0 !important;
+}
+.header {
+    align-items: flex-start;
+}
+.wrapPlayers {
+    display: flex;
+    flex-direction: column;
+    padding-left: 15%;
 }

@@ -77,10 +77,6 @@ const getWinner = (
     return roundWin[0] == roundWin[1] ? 2 : roundWin[0] > roundWin[1] ? 0 : 1;
 };
 
-// const isEndgame = sets => {
-//     getWinner(sets);
-// };
-
 const Playing: React.FC = () => {
     let { roomId } = useParams<{ roomId: string }>();
     const [sets, setSets] = useState({
@@ -90,6 +86,7 @@ const Playing: React.FC = () => {
     });
 
     const [players, setPlayers] = useState<User[]>([]);
+    const [isRound3, setIsRound] = useState(false);
 
     const initData = async () => {
         const players = await getPlayersInRoom(roomId);
@@ -101,10 +98,8 @@ const Playing: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        console.log('========= getWinner(sets========');
-        console.log(getWinner(sets));
-        console.log('====================================');
-    });
+        isEndSet(sets[2]) && getWinner(sets) == 2 && setIsRound(true);
+    }, [sets]);
 
     const submitEndGame = async () => {
         const winner = getWinner(sets);
@@ -113,26 +108,19 @@ const Playing: React.FC = () => {
             sets,
             players[winner],
             Object.values(sets).reduce((acc, cur) => {
-                return acc + cur[winner];
+                return acc + cur[winner] + players[winner].score; // total score
             }, 0),
         );
         if (res) history.push('/top-players');
     };
 
     const show = (index: number) => {
-        if (getWinner(sets) != 2 && index == 2 && !isEndSet(sets[index]))
-            return false;
-        return index == 0 || isEndSet(sets[index]);
-        // if (index == 0) {
-        //     return true;
-        // } else if (isEndSet(sets[0])) {
-        //     return getWinner(sets) == 2;
-        // }
-        // if (index == 0) {
-        //     return true;
-        // } else if (isEndSet(sets[1])) {
-        //     return getWinner(sets) != 2;
-        // }
+        if (index == 0) {
+            return true;
+        } else if (index == 1) {
+            return isEndSet(sets[index]);
+        }
+        return isRound3;
     };
 
     return (
@@ -144,13 +132,15 @@ const Playing: React.FC = () => {
                     <CardHome
                         avatar={players[0]?.photoURL || ''}
                         name={players[0]?.displayName || ''}
+                        active={getWinner(sets) == 0}
                     />
 
-                    <h2>VS</h2>
+                    <h2 style={{ margin: 'auto auto' }}>VS</h2>
 
                     <CardHome
                         avatar={players[1]?.photoURL || ''}
                         name={players[1]?.displayName || ''}
+                        active={getWinner(sets) == 1}
                     />
                 </Row>
                 {Object.values(sets).map((set, index) => (
@@ -165,11 +155,10 @@ const Playing: React.FC = () => {
                             sets[index + 1][1] = value;
                             setSets({ ...sets });
                         }}
-                        // disabled={isEndSet(set)}
                         show={show(index)}
                     />
                 ))}
-                <b>Winner: {players[getWinner(sets)]?.displayName}</b>
+
                 <Button
                     type="primary"
                     disabled={getWinner(sets) == 2}
