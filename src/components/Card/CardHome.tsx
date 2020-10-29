@@ -15,7 +15,7 @@ const CardHome: React.FC<PropsCard> = ({ name, avatar, onClick, active }) => {
     return (
         <Card
             hoverable
-            className={styles.cardHome}
+            className={styles.cardHome + ' ' + (active && styles.active)}
             cover={
                 !avatar ? (
                     <div className={styles.loading}>
@@ -26,7 +26,6 @@ const CardHome: React.FC<PropsCard> = ({ name, avatar, onClick, active }) => {
                 )
             }
             onClick={onClick}
-            style={{ border: active ? '2.5px solid #ffc22f' : 'none' }}
         >
             <h3>{name} </h3>
         </Card>

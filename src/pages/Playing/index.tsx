@@ -6,6 +6,7 @@ import styles from '../HomePage/styles.less';
 import stylesPage from './styles.less';
 import { useParams, history } from 'umi';
 import { endGame, getPlayersInRoom } from '@/services/game';
+import PageLoading from '@/components/PageLoading';
 
 interface PropsSet {
     setValueOnce: any;
@@ -78,6 +79,7 @@ const getWinner = (
 };
 
 const Playing: React.FC = () => {
+    const [loading, setLoading] = useState(true);
     let { roomId } = useParams<{ roomId: string }>();
     const [sets, setSets] = useState({
         1: [0, 0],
@@ -86,20 +88,15 @@ const Playing: React.FC = () => {
     });
 
     const [players, setPlayers] = useState<User[]>([]);
-    const [isRound3, setIsRound] = useState(false);
-
     const initData = async () => {
         const players = await getPlayersInRoom(roomId);
         setPlayers(players);
+        setLoading(false);
     };
 
     useEffect(() => {
         initData();
     }, []);
-
-    useEffect(() => {
-        isEndSet(sets[2]) && getWinner(sets) == 2 && setIsRound(true);
-    }, [sets]);
 
     const submitEndGame = async () => {
         const winner = getWinner(sets);
@@ -115,14 +112,13 @@ const Playing: React.FC = () => {
     };
 
     const show = (index: number) => {
-        if (index == 0) {
-            return true;
-        } else if (index == 1) {
-            return isEndSet(sets[index]);
-        }
-        return isRound3;
+        if (index < 2) return index == 0 || isEndSet(sets[index]);
+        return (
+            isEndSet(sets[index]) && getWinner({ 1: sets[1], 2: sets[2] }) == 2
+        );
     };
 
+    if (loading) return <PageLoading />;
     return (
         <div className="container">
             <div className={styles.homePage}>
@@ -161,6 +157,7 @@ const Playing: React.FC = () => {
 
                 <Button
                     type="primary"
+                    block
                     disabled={getWinner(sets) == 2}
                     onClick={submitEndGame}
                 >

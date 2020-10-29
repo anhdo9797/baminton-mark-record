@@ -5,6 +5,8 @@ import { Input, Button, Form } from 'antd';
 import styles from './style.less';
 import Card from '@/components/Card/CardSearch';
 import { getPlayers } from '@/services/user';
+import dayjs from 'dayjs';
+dayjs.extend(require('dayjs/plugin/relativeTime'));
 
 interface PropsSearch {
     selectUser: any;
@@ -18,7 +20,7 @@ const SearchPlayer: React.FC<PropsSearch> = ({
     playerTow,
 }) => {
     const [form] = Form.useForm();
-    const [listPlayer, setListPlayer] = useState([]);
+    const [listPlayer, setListPlayer] = useState<User[]>([]);
 
     useEffect(() => {
         getListPlayer();
@@ -26,7 +28,6 @@ const SearchPlayer: React.FC<PropsSearch> = ({
 
     const getListPlayer = async () => {
         const list = await getPlayers();
-
         setListPlayer(list);
     };
 
@@ -34,7 +35,7 @@ const SearchPlayer: React.FC<PropsSearch> = ({
         let { name } = value;
 
         let getSearch = listPlayer.filter(
-            (e: any) =>
+            (e: User) =>
                 e.displayName.toUpperCase().indexOf(name.toUpperCase()) != -1,
         );
         setListPlayer(getSearch);
@@ -66,11 +67,15 @@ const SearchPlayer: React.FC<PropsSearch> = ({
                 </Form>
 
                 <div className={styles.listUser}>
-                    {restPlayer.map((e: any, i) => (
+                    {restPlayer.map((e, i) => (
                         <Card
                             name={e.displayName}
                             avatar={e.photoURL}
-                            active={'Active 5 mins ago'}
+                            active={
+                                e.lastLoginAt
+                                    ? dayjs(e.lastLoginAt).fromNow()
+                                    : 'offline'
+                            }
                             key={i}
                             onClick={() => selectUser(e)}
                         />

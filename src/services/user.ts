@@ -6,11 +6,10 @@ const usersRef = firestore.collection('users');
 export const login = async (email: string, password: string) => {
     try {
         const user = await auth.signInWithEmailAndPassword(email, password);
-
-        console.log('user', user.user);
-
-        localStorage.setItem('user', JSON.stringify(user?.user));
-
+        await usersRef.doc(user.user?.uid).update({
+            status: 'online',
+            lastLoginAt: Date.now(),
+        });
         return user.user;
     } catch (error) {
         message.error(error.message);
@@ -68,6 +67,7 @@ export const updateProfile = async (displayName: string, photoURL: string) => {
 };
 
 export const getPlayers = async () => {
+    let listPlayer = [] as User[];
     try {
         let snapshot = await usersRef.get();
 
@@ -75,15 +75,15 @@ export const getPlayers = async () => {
             message.error('Connection errors');
         }
 
-        let listPlayer: any[] = [];
         snapshot.forEach(doc => {
-            listPlayer.push(doc.data());
+            listPlayer.push(doc.data() as User);
         });
-
-        return listPlayer;
     } catch (error) {
         message.error(error.message);
     }
+    return listPlayer.sort(
+        (a, b) => (b.lastLoginAt || 0) - (a.lastLoginAt || 0),
+    );
 };
 
 export const logout = () => auth.signOut();

@@ -29,7 +29,7 @@ const HomePage: React.FC<PropsHome> = props => {
         setPlayer(1);
     };
 
-    const selectPlayerTow = () => {
+    const selectPlayerTwo = () => {
         setShowModal(true);
         setPlayer(2);
     };
@@ -66,10 +66,10 @@ const HomePage: React.FC<PropsHome> = props => {
                         <CardHome
                             avatar={playerTow.photoURL}
                             name={playerTow.displayName}
-                            onClick={selectPlayerTow}
+                            onClick={selectPlayerTwo}
                         />
                     ) : (
-                        <CardEmpty onClick={selectPlayerTow} />
+                        <CardEmpty onClick={selectPlayerTwo} />
                     )}
                 </Row>
 
@@ -79,7 +79,12 @@ const HomePage: React.FC<PropsHome> = props => {
                     </Button>
                 ) : null}
 
-                <Modal visible={showModal}>
+                <Modal
+                    width="100%"
+                    footer={false}
+                    visible={showModal}
+                    onCancel={() => setShowModal(false)}
+                >
                     <SearchPlayer
                         selectUser={completeSelect}
                         playerOnce={playerOnce}

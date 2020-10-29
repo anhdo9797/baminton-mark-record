@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Col, Button } from 'antd';
-import { history } from 'umi';
+import { history, useModel } from 'umi';
 
 import styles from '../HomePage/styles.less';
 import style from './styles.less';
@@ -18,9 +18,7 @@ const colors = [
 ];
 
 const formatNumber = (number: number) =>
-    new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(
-        number,
-    );
+    new Intl.NumberFormat('en-US').format(number);
 
 const Player: React.FC<{
     avatar: string;
@@ -52,14 +50,9 @@ const Player: React.FC<{
 
 const TopPlayer: React.FC = () => {
     //?=====STATE==========
+    const { initialState } = useModel('@@initialState');
+    const { currentUser } = initialState;
     const [topUsers, setTopUser] = useState([]);
-
-    const local = localStorage.getItem('user');
-    const profile = JSON.parse(local || '');
-
-    useEffect(() => {
-        console.log('local', profile);
-    }, []);
 
     useEffect(() => {
         getTopPlayer();
@@ -80,7 +73,7 @@ const TopPlayer: React.FC = () => {
     };
 
     const getName = (user: User) => {
-        if (user.uid === profile.uid) return `${user.displayName} (you)`;
+        if (user.uid === currentUser.uid) return `${user.displayName} (you)`;
         return user.displayName;
     };
 
@@ -100,7 +93,7 @@ const TopPlayer: React.FC = () => {
                     {topUsers.map((user: User, key) => (
                         <Player
                             name={getName(user)}
-                            score={user.score || ''}
+                            score={user.score || 0}
                             avatar={user.photoURL || ''}
                             places={key + 1}
                             uid={user.uid}

@@ -4,4 +4,5 @@ interface User {
     photoURL: string;
     email: string;
     score: number;
+    lastLoginAt: number;
 }

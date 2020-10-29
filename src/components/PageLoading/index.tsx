@@ -1,7 +1,7 @@
 import React from 'react';
 import style from './style.less';
 
-const Loading = () => {
+const PageLoading = () => {
     return (
         <div className={style.loading}>
             <div className={style.spiner}>
@@ -12,4 +12,4 @@ const Loading = () => {
     );
 };
 
-export default Loading;
+export default PageLoading;
