@@ -7,21 +7,21 @@ pipeline {
     }
     //follow syntax: https://www.jenkins.io/doc/book/pipeline/docker/
     stages {
-        stage('Install depenency and build') {
+        stage('Install dependencies and build') {
             agent {
                 docker { image 'node:12-alpine' }
             }
             steps {
-                echo 'Install depenency'
-                sh 'npm install'
+                // echo 'install dependencies'
+                // sh 'npm install'
 
-                echo 'build bundel'
-                sh 'npm build'
+                // echo 'build bundel'
+                // sh 'npm build'
             }
         }
         stage('Deploy to server') {
             agent {
-                docker { image 'w9jds/firebase-action' }
+                docker { image 'w9jds/firebase-action@master' }
             }
             steps {
                 echo 'Deploy to firebase'

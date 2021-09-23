@@ -1,5 +1,4 @@
-name: NodeJS with Webpack
-
+name: Build and deloy app to Firebase
 on:
   push:
     branches: [ master ]
