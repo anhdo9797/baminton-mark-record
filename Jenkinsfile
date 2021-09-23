@@ -22,7 +22,8 @@ pipeline {
         stage('Deploy to server') {
             agent {
                 //docker pull w9jds/firebase-action:latest
-                docker { image 'w9jds/firebase-action:latest' }
+                //docker pull andreysenov/firebase-tools:9.18.0
+                docker { image 'andreysenov/firebase-tools:9.18.0' }
             }
             steps {
                 echo 'Deploy to firebase'
