@@ -1,13 +1,11 @@
 pipeline {
-    // agent {
-    //     docker {
-    //         image 'node:6-alpine' 
-    //         args '-p 3000:3000' 
-    //     }
-    // }
-    agent { label 'web' }
-
-    triggers { upstream(upstreamProjects: 'release') }
+    agent {
+        docker {
+            image 'node:12-alpine' 
+            args '-p 3000:3000' 
+        }
+    }
+    // agent { label 'web' } 
 
     // environment {
     //     //login firebase: sudo firebase login:ci --no-localhost --debug
