@@ -12,10 +12,10 @@ pipeline {
                 docker { image 'node:12-alpine' }
             }
             steps {
-                // echo 'install dependencies'
+                echo 'install dependencies'
                 // sh 'npm install'
 
-                // echo 'build bundel'
+                echo 'build bundel'
                 // sh 'npm build'
             }
         }
