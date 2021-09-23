@@ -1,7 +1,8 @@
 pipeline {
     agent {
         docker {
-            image 'node:12-alpine'
+            image 'node:lts-buster-slim' 
+            args '-p 3000:3000' 
         }
     }
     // agent { label 'web' } 
