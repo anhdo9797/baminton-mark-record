@@ -9,25 +9,13 @@ pipeline {
     }
     //follow syntax: https://www.jenkins.io/doc/book/pipeline/docker/
     stages {
-        // stage('Install dependencies and build') {
-        //     agent {
-        //         docker { image 'node:12-alpine' }
-        //     }
-        //     steps {
-        //         echo 'install dependencies'
-        //         // sh 'npm install'
-
-        //         echo 'build bundel'
-        //         // sh 'npm build'
-        //     }
-        // }
         stage('Install dependencies and build'){
             steps {
                 echo 'install dependencies'
                 sh 'npm install'
 
                 echo 'build bundel'
-                sh 'npm build'
+                sh 'npm run build'
             }  
         }
         stage('Deploy to server') {
