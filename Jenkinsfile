@@ -1,8 +1,9 @@
 pipeline {
     agent {
         docker {
-            image 'node:12-alpine' 
-            args '-p 3000:3000' 
+            image 'maven:3.8.1-adoptopenjdk-11'
+            label 'my-defined-label'
+            args  '-v /tmp:/tmp'
         }
     }
     // agent { label 'web' } 
