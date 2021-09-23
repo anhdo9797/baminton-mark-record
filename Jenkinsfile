@@ -26,9 +26,8 @@ pipeline {
                 docker { image 'andreysenov/firebase-tools:9.18.0' }
             }
             steps {
-                echo 'node --version'
-                echo 'java --version'
-                echo 'node --version'
+                sh 'node --version'
+                sh 'java --version' 
                 // sh 'deploy --only hosting'
             }
         }
