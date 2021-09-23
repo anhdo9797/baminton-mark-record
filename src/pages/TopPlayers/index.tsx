@@ -51,7 +51,7 @@ const Player: React.FC<{
 const TopPlayer: React.FC = () => {
     //?=====STATE==========
     const { initialState } = useModel('@@initialState');
-    const { currentUser } = initialState;
+    const { currentUser } = initialState ?? {};
     const [topUsers, setTopUser] = useState([]);
 
     useEffect(() => {
@@ -73,7 +73,7 @@ const TopPlayer: React.FC = () => {
     };
 
     const getName = (user: User) => {
-        if (user.uid === currentUser.uid) return `${user.displayName} (you)`;
+        if (user.uid === currentUser?.uid) return `${user.displayName} (you)`;
         return user.displayName;
     };
 

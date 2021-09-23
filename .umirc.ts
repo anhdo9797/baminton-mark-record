@@ -95,11 +95,13 @@ export default defineConfig({
     },
     define: {
         FIREBASE_CONFIG: {
-            apiKey: process.env.FIREBASE_API_KEY,
-            authDomain: `${process.env.FIREBASE_PROJECT_ID}.firebaseapp.com`,
-            databaseURL: `https://${process.env.FIREBASE_PROJECT_ID}.firebaseio.com`,
-            projectId: `${process.env.FIREBASE_PROJECT_ID}`,
-            storageBucket: `${process.env.FIREBASE_PROJECT_ID}.appspot.com`,
+            apiKey: 'AIzaSyCC_SCRpY5ots2Rt93hJbowGSuLJsJ6KoE',
+            authDomain: 'badminton-7dc53.firebaseapp.com',
+            databaseURL: 'https://badminton-7dc53.firebaseio.com',
+            projectId: 'badminton-7dc53',
+            storageBucket: 'badminton-7dc53.appspot.com',
+            messagingSenderId: '730757104446',
+            appId: '1:730757104446:web:524e085e3836ebe302a26f',
         },
     },
 });
