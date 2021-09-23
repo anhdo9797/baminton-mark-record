@@ -7,18 +7,18 @@ pipeline {
     }
     //follow syntax: https://www.jenkins.io/doc/book/pipeline/docker/
     stages {
-        stage('Install dependencies and build') {
-            agent {
-                docker { image 'node:12-alpine' }
-            }
-            steps {
-                echo 'install dependencies'
-                // sh 'npm install'
+        // stage('Install dependencies and build') {
+        //     agent {
+        //         docker { image 'node:12-alpine' }
+        //     }
+        //     steps {
+        //         echo 'install dependencies'
+        //         // sh 'npm install'
 
-                echo 'build bundel'
-                // sh 'npm build'
-            }
-        }
+        //         echo 'build bundel'
+        //         // sh 'npm build'
+        //     }
+        // }
         stage('Deploy to server') {
             agent {
                 //docker pull w9jds/firebase-action:latest
@@ -26,8 +26,10 @@ pipeline {
                 docker { image 'andreysenov/firebase-tools:9.18.0' }
             }
             steps {
-                echo 'Deploy to firebase'
-                sh 'deploy --only hosting'
+                echo 'node --version'
+                echo 'java --version'
+                echo 'node --version'
+                // sh 'deploy --only hosting'
             }
         }
     }
