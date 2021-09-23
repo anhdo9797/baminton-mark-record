@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        docker { image 'andreysenov/firebase-tools:9.18.0-node12-alpine' }
+    }
 
     environment {
         //login firebase: sudo firebase login:ci --no-localhost --debug
@@ -19,16 +21,18 @@ pipeline {
         //         // sh 'npm build'
         //     }
         // }
-        stage('Deploy to server') {
-            agent {
-                //docker pull w9jds/firebase-action:latest
-                //docker pull andreysenov/firebase-tools:9.18.0
-                docker { image 'andreysenov/firebase-tools:9.18.0' }
-            }
+        stage('Install dependencies and build'){
             steps {
-                sh 'node --version'
-                sh 'java --version' 
-                // sh 'deploy --only hosting'
+                echo 'install dependencies'
+                sh 'npm install'
+
+                echo 'build bundel'
+                sh 'npm build'
+            }  
+        }
+        stage('Deploy to server') {
+            steps {
+                sh 'firebase deploy --only hosting'
             }
         }
     }
