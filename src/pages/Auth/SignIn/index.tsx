@@ -26,7 +26,7 @@ const SignIn: React.FC = () => {
 
     return (
         <div className={styles.container}>
-            <h1>SMASH</h1>
+            <h1>SMASH1</h1>
             <h4>Welcome back!</h4>
             <Form validateTrigger="onBlur" form={form} onFinish={onSubmit}>
                 <Form.Item
